@@ -17,7 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin/dashbord', function () {
+Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
+});
+Route::get('admin/admin/list', function () {
+    return view('admin.admin.list');
 });
 
