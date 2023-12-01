@@ -9,6 +9,9 @@ use App\Models\User;
 use App\mail\ForgotPasswordMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Application;
+use Illuminate\Routing\Redirector;
+use Illuminate\Http\RedirectResponse;
 
 
 class AuthController extends Controller
@@ -48,6 +51,7 @@ class AuthController extends Controller
 
                 }else if(Auth::user()->user_type==2)
                 {
+                    //return redirect('admin/dashboard');
                     return redirect('teacher/dashboard');
 
                 }else if(Auth::user()->user_type==3)
@@ -85,7 +89,34 @@ class AuthController extends Controller
                 return redirect()->back()->with('error',"Email not fount in the system .");
             }
         }
+        public function reset($remember_token)
+        {
+            $user =User::getTokenSingle($remember_token);
+             if(!empty($user))
+             {
+                 $data['user']=$user;
+               return view('auth.reset',$data)  ;
+             }else
+             {
+                 abort(404);
+             }
+        }
+        public function PostReset($token, Request $request)
+        {
+            if ($request->password==$request->cpassword)
+            {
+                $user =User::getTokenSingle($token);
+                $user->password=Hash::make($request->password);
+                $user->remember_token =Str::random(30);
+                $user->save();
+                return redirect(url(''))->with('success',"Password successfully reset");
+            }
+            else
+            {
+                return redirect()->back()->with('error', "Password and confirm password do not match");
 
+            }
+        }
     public function logout ()
         {
             Auth::logout();

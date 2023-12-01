@@ -39,7 +39,7 @@ use Illuminate\Queue\SerializesModels;
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.forget',
+            markdown: 'emails.forgot',
             with: [
                 'user' => $this->user,
             ],

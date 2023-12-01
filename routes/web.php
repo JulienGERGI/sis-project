@@ -22,12 +22,15 @@ Route::post('login',[AuthController::class,'AuthLogin']);
 Route::get('logout',[AuthController::class,'logout']);
 Route::get('forgot-password',[AuthController::class,'forgotpassword']);
 Route::post('forgot-password',[AuthController::class,'postForgotPassword']);
+Route::get('reset/{token}',[AuthController::class,'reset']);
+Route::post('reset/{token}',[AuthController::class,'PostReset']);
 
 
 
-Route::get('admin/dashboard', function () {
+Route::get('admnin/dashboard', function () {
     return view('admin.dashboard');
 });
+
 Route::get('admin/admin/list', function () {
     return view('admin.admin.list');
 });
@@ -40,6 +43,7 @@ Route::group(['middleware'=>'admin'],function (){
 Route::group(['middleware'=>'teacher'],function (){
 
     Route::get('teacher/dashboard',[DashboardController::class,'dashboard']);
+
 
 });
 Route::group(['middleware'=>'student'],function (){
