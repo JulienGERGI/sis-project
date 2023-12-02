@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\DashboardController;
-
+use \App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,17 +27,21 @@ Route::post('reset/{token}',[AuthController::class,'PostReset']);
 
 
 
-Route::get('admnin/dashboard', function () {
-    return view('admin.dashboard');
-});
 
-Route::get('admin/admin/list', function () {
-    return view('admin.admin.list');
-});
 
 Route::group(['middleware'=>'admin'],function (){
 
     Route::get('admin/dashboard',[DashboardController::class,'dashboard']);
+    Route::get('admin/admin/list', [AdminController::class,'list']);
+    Route::get('admin/admin/add', [AdminController::class,'add']);
+    Route::post('admin/admin/add', [AdminController::class,'insert']);
+    Route::get('admin/admin/edit/{id}', [AdminController::class,'edit']);
+    Route::post('admin/admin/edit/{id}', [AdminController::class,'update']);
+    Route::get('admin/admin/delete/{id}', [AdminController::class,'delete']);
+
+
+
+
 
 });
 Route::group(['middleware'=>'teacher'],function (){
