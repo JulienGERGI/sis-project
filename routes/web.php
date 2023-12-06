@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\ClassSubjectController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\DashboardController;
@@ -26,8 +28,8 @@ Route::get('forgot-password',[AuthController::class,'forgotpassword']);
 Route::post('forgot-password',[AuthController::class,'postForgotPassword']);
 Route::get('reset/{token}',[AuthController::class,'reset']);
 Route::post('reset/{token}',[AuthController::class,'PostReset']);
-
-
+Route::get('auth/google',[\App\Http\Controllers\GoogleAuteController::class,'redirect'])->name('google-auth');
+Route::get('auth/google/call-back',[\App\Http\Controllers\GoogleAuteController::class,'callbackGoogle']);
 
 
 
@@ -58,6 +60,17 @@ Route::group(['middleware'=>'admin'],function (){
     Route::get('admin/subject/edit/{id}', [SubjectController::class,'edit']);
     Route::post('admin/subject/edit/{id}', [SubjectController::class,'update']);
     Route::get('admin/subject/delete/{id}', [SubjectController::class,'delete']);
+
+
+    //assign_subject
+    Route::get('admin/assign_subject/list', [ClassSubjectController::class,'list']);
+    Route::get('admin/assign_subject/add', [ClassSubjectController::class,'add']);
+    Route::post('admin/assign_subject/add', [ClassSubjectController::class,'insert']);
+    Route::get('admin/assign_subject/edit/{id}', [ClassSubjectController::class,'edit']);
+    Route::post('admin/assign_subject/edit/{id}', [ClassSubjectController::class,'update']);
+    Route::get('admin/assign_subject/delete/{id}', [ClassSubjectController::class,'delete']);
+
+
 
 
 

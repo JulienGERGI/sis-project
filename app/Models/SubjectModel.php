@@ -17,7 +17,6 @@ class SubjectModel extends Model
         $return=SubjectModel::select ('subject.*','users.name as created_by_name')
             ->join('users','users.id','subject.created_by');
 
-
         if (!empty(Request::get('name')))
         {
             $return = $return->where('subject.name','like','%'.Request::get('name').'%');
@@ -26,7 +25,6 @@ class SubjectModel extends Model
         {
             $return = $return->where('subject.type','=',Request::get('type'));
         }
-
         if (!empty(Request::get('date')))
         {
             $return = $return->whereDate('subject.created_at','=',Request::get('date'));
@@ -35,8 +33,17 @@ class SubjectModel extends Model
             ->orderBy('subject.id','desc')
             ->paginate(20);
         return$return;
+    }
+    static public function getSubject()
+    {
 
-
+        $return=SubjectModel::select ('subject.*')
+            ->join('users','users.id','subject.created_by')
+            ->where('subject.is_delete','=',0)
+            ->where('subject.status','=',0)
+            ->orderBy('subject.name','asc')
+            ->get();
+        return $return;
     }
     static public function getSingle($request)
     {

@@ -33,6 +33,16 @@ class ClassModel extends Model
 
 
     }
+    static public function getClass()
+    {
+        $return=ClassModel::select ('class.*')
+            ->join('users','users.id','class.created_by')
+            ->where('class.is_delete','=',0)
+            ->where('class.status','=',0)
+            ->orderBy('class.name','desc')
+            ->get();
+        return$return;
+    }
     static public function getSingle($request)
     {
         return self::find($request);
