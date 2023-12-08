@@ -25,6 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'accessToken', // Add the new columns to the $fillable array
+        'refreshToken',
     ];
 
     /**
@@ -57,9 +60,9 @@ class User extends Authenticatable
             ->where('is_delete','=',0)
             ->whereNotIn('id', [1]);
         if (!empty(Request::get('name')))
-         {
+        {
             $return = $return->where('name','like','%'.Request::get('name').'%');
-         }
+        }
         if (!empty(Request::get('email')))
         {
             $return = $return->where('email','like','%'.Request::get('email').'%');
@@ -68,7 +71,7 @@ class User extends Authenticatable
         {
             $return = $return->whereDate('created_at','=',Request::get('date'));
         }
-          $return=$return->orderBy('id','desc')
+        $return=$return->orderBy('id','desc')
             ->paginate(20);
         return$return;
     }

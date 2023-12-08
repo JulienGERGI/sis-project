@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->tinyInteger('user_type')->default(3)->unsigned();
             $table->tinyInteger('is_delete')->default(0)->unsigned();
-            $table->string('google_id')->nullable();
+            $table->string('google_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

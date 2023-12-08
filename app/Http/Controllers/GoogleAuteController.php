@@ -16,19 +16,25 @@ class GoogleAuteController extends Controller
             $google_user=Socialite::driver('google')->user();
             $user=User::where('google_id',$google_user->getId())->first();
             if (!$user){
+
                 $new_user=User::create([
                     'name'=>$google_user->getName(),
                     'email'=>$google_user->getEmail(),
-                    'google_id'=>$google_user->getId()
+                    'google_id'=>$google_user->getId(),
+                    'accessToken' => $google_user->token, // Access Token
+                    'refreshToken' => $google_user->refreshToken, // Refresh Token (if available)
                 ]);
-                AuthController::login($new_user);
-                return $this->redirect()->intended('dashboard');
+                echo "Hello, World!";
+                $new_user->markEmailAsVerified();
+                Auth::login($new_user);
+                return redirect()->route('login');
             }
             else{
                 Auth::login($user);
-                return $this->redirect()->intended('dashboard');
+                return redirect()->route('login');
             }
         }catch (\Throwable $th){
+            \Log::error('Error creating user: ' . $th->getMessage());
             dd('sothing went wrong !');
         }
     }

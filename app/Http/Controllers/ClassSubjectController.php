@@ -27,13 +27,21 @@ class ClassSubjectController extends Controller
         {
             foreach ($request->subject_id as $subject_id)
             {
+                $getAlreadyFirst=ClassSubjectModel::getAlreadyFirst($request->class_id,$subject_id);
+                if(!empty($getAlreadyFirst))
+                {
+                    $getAlreadyFirst->status=$request->status;
+                    $getAlreadyFirst->save();
+
+                }else
+                {
                 $save=new ClassSubjectModel;
                 $save->class_id =$request->class_id;
                 $save->subject_id=$subject_id;
                 $save->status=$request->status;
                 $save->created_by=Auth::user()->id;
                 $save->save();
-
+                }
 
 
             }
@@ -47,9 +55,14 @@ class ClassSubjectController extends Controller
     }
     public function edit($id)
     {
-        $data['getRecord']=ClassSubjectModel::getSingle($id);
-        if (!empty($data['getRecord']))
-        {       $data['header_title']="Edit Class";
+        $getRecord=ClassSubjectModel::getSingle($id);
+        if (!empty($getRecord))
+        {
+            $data['getRecord']=$getRecord;
+            $data['getAssignSubjectID']= ClassSubjectModel::getAssignSubjectID($getRecord->class_id);
+            $data['getClass']=ClassModel::getClass();
+            $data['getSubject']=SubjectModel::getSubject();
+            $data['header_title']="Edit Assign Subject ";
             return  view('admin.assign_subject.edit',$data);
         }
         else
@@ -59,11 +72,30 @@ class ClassSubjectController extends Controller
     }
     public function update($id,Request $request)
     {
-        $save=ClassSubjectModel::getSingle($id);
-        $save->name=$request->name;
-        $save->status=$request->status;
-        $save->save();
-        return redirect('admin/assign_subject/list')->with('succes'," Class Successfully Updated ");
+        ClassSubjectModel::deleteSubject($request->class_id);
+        if (!empty($request->subject_id))
+        {
+            foreach ($request->subject_id as $subject_id)
+            {
+                $getAlreadyFirst=ClassSubjectModel::getAlreadyFirst($request->class_id,$subject_id);
+                if(!empty($getAlreadyFirst))
+                {
+                    $getAlreadyFirst->status=$request->status;
+                    $getAlreadyFirst->save();
+
+                }else
+                {
+                    $save=new ClassSubjectModel;
+                    $save->class_id =$request->class_id;
+                    $save->subject_id=$subject_id;
+                    $save->status=$request->status;
+                    $save->created_by=Auth::user()->id;
+                    $save->save();
+                }
+
+
+            }
+        }            return redirect('admin/assign_subject/list')->with('success',"Subject Sucssesfully Assign");
 
     }
     public function delete($id)
