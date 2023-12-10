@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 class GoogleAuteController extends Controller
@@ -13,6 +14,11 @@ class GoogleAuteController extends Controller
     }
     public function callbackGoogle(){
         try {
+            $response = Http::withOptions([
+                'verify' => false, // Disable SSL verification
+            ])->get('https://www.googleapis.com/oauth2/v4/token');
+
+
             $google_user=Socialite::driver('google')->user();
             $user=User::where('google_id',$google_user->getId())->first();
             if (!$user){
