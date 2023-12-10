@@ -17,7 +17,7 @@ var rfc2822 = [
   "Resent-Cc", "Resent-Bcc", "Resent-Message-ID", "Return-Path", "Received"
 ];
 var rfc2822NoEmail = [
-  "Date", "Subject", "Comments", "Keywords", "Resent-Date"
+  "Date", "SubjectModel", "Comments", "Keywords", "Resent-Date"
 ];
 
 CodeMirror.registerHelper("hintWords", "mbox", rfc2822.concat(rfc2822NoEmail));
@@ -33,7 +33,7 @@ var bracketedEmail = /^<.*?>/;
 var untilBracketedEmail = /^.*?(?=<.*>)/;
 
 function styleForHeader(header) {
-  if (header === "Subject") return "header";
+  if (header === "SubjectModel") return "header";
   return "string";
 }
 
