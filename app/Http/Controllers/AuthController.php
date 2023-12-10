@@ -41,8 +41,10 @@ class AuthController extends Controller
             }
             return view('auth.login');
    }
+
     public function AuthLogin(Request $request)
-        {$remember =!empty($request->rember)?true:false;
+        {
+            $remember =!empty($request->rember)?true:false;
             if(Auth::attempt(['email'=>$request->email,'password'=>$request->password],$remember))
             {
                 if(Auth::user()->user_type==1)
@@ -62,8 +64,14 @@ class AuthController extends Controller
                 {
                     return redirect('parent/dashboard');
 
+                }else if(Auth::user()->user_type==5)
+                {
+
+                    return redirect('alumni/dashboard');
+
                 }
-            }else
+            }
+            else
             {
                 return redirect()->back()->with('error','please enter currect email and password');
             }

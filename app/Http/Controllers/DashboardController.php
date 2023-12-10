@@ -8,6 +8,7 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
+
         $data['header_title']='Dashboard';
         if(Auth::user()->user_type==1)
         {
@@ -28,6 +29,12 @@ class DashboardController extends Controller
             if(Auth::user()->user_type==4)
         {
             return view('parent.dashboard',$data);
+
+        }else
+            if(Auth::user()->user_type==5)
+        {
+
+            return view('alumni.dashboard',$data);
 
         }
 

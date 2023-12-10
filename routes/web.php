@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\DashboardController;
 use \App\Http\Controllers\AdminController;
+use App\Http\Controllers\ZoomIntegrationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +28,9 @@ Route::get('reset/{token}',[AuthController::class,'reset']);
 Route::post('reset/{token}',[AuthController::class,'PostReset']);
 
 
+Route::post('/createWebinar',[ZoomIntegrationController::class,'createMeeting']);
+
+
 
 
 
@@ -44,6 +49,15 @@ Route::group(['middleware'=>'admin'],function (){
 
 
 });
+
+
+Route::group(['middleware'=>'alumni'],function (){
+
+    Route::get('alumni/dashboard',[DashboardController::class,'dashboard']);
+
+
+});
+
 Route::group(['middleware'=>'teacher'],function (){
 
     Route::get('teacher/dashboard',[DashboardController::class,'dashboard']);
@@ -60,5 +74,12 @@ Route::group(['middleware'=>'parent'],function (){
     Route::get('parent/dashboard',[DashboardController::class,'dashboard']);
 
 });
+
+Route::group(['middleware'=>'alumni'],function (){
+
+    Route::get('alumni/dashboard',[DashboardController::class,'dashboard']);
+
+});
+
 
 
