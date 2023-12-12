@@ -41,6 +41,10 @@
                                                 <input type="text" class="form-control" name="email"  value="{{Illuminate\Support\Facades\Request::get('email')}}"  placeholder=" Email">
                                             </div>
                                                 <div class="form-group col-md-3 ">
+                                                    <label >Date</label>
+                                                    <input type="date" class="form-control" name="date"  value="{{Illuminate\Support\Facades\Request::get('date')}}"  placeholder=" Email">
+                                                </div>
+                                                <div class="form-group col-md-3 ">
                                                     <button class="btn btn-primary" type="submit" style="margin-top: 30px;">Search</button>
                                                     <a href="{{url('admin/admin/list')}}" class="btn btn-success" style="margin-top: 30px;" >Clear</a>
                                                 </div>
@@ -71,6 +75,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Created Date</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -79,7 +84,7 @@
                                             <td>{{$value->id}}</td>
                                             <td>{{$value->name}}</td>
                                             <td>{{$value->email}}</td>
-                                            <td>{{$value->created_at}}</td>
+                                            <td>{{date('d-m-y H:i A',strtotime($value->created_at))}}</td>
                                             <td>
                                                 <a href="{{ url('admin/admin/edit/' . $value->id) }}" class="btn btn-primary">Edit</a>
                                                 <a href="{{ url('admin/admin/delete/' . $value->id) }}" class="btn btn-danger">Delete</a>

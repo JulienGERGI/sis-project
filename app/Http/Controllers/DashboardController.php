@@ -32,13 +32,6 @@ class DashboardController extends Controller
         {
             return view('parent.dashboard',$data);
 
-        }else
-            if(Auth::user()->user_type==5)
-        {
-            $webinars = Webinar::where('userid',auth()->id())->get();
-            $jobs = JobPost::where('userId',auth()->id())->get();
-            return view('alumni/dashboard', ['webinars' => $webinars], ['jobs' => $jobs]);
-
         }
 
     }
