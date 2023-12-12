@@ -25,6 +25,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'accessToken', // Add the new columns to the $fillable array
+        'refreshToken',
     ];
 
     /**
@@ -64,10 +67,26 @@ class User extends Authenticatable
         {
             $return = $return->where('email','like','%'.Request::get('email').'%');
         }
+        if (!empty(Request::get('date')))
+        {
+            $return = $return->whereDate('created_at','=',Request::get('date'));
+        }
           $return=$return->orderBy('id','desc')
-            ->paginate(2);
+            ->paginate(20);
         return$return;
     }
+    
+    static public function getStudent()
+    {
+        $return= self::select('users.*')
+                    ->where('users.user_type','=',3)
+                    ->where('users.is_delete','=',0)
+                    ->whereNotIn('users.id', [1]);
+          $return=$return->orderBy('users.id','desc')
+                        ->paginate(20);
+        return$return;
+    }
+
     static public function  getSingle($id)
     {
         return self::find($id);
@@ -78,3 +97,4 @@ class User extends Authenticatable
     }
 
 }
+//fdadjdfkajjfdaf

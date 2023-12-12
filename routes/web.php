@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\ClassSubjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\DashboardController;
@@ -35,7 +38,7 @@ Route::get('createWebinar',[ZoomIntegrationController::class,'goToCreate'])->nam
 
 
 
-Route::group(['middleware'=>'admin'],function (){
+Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/dashboard',[DashboardController::class,'dashboard']);
     Route::get('admin/admin/list', [AdminController::class,'list']);
@@ -56,18 +59,30 @@ Route::group(['middleware'=>'admin'],function (){
 
 Route::group(['middleware'=>'teacher'],function (){
 
-    Route::get('teacher/dashboard',[DashboardController::class,'dashboard']);
+    Route::get('teacher/dashboard', [DashboardController::class, 'dashboard']);
+    Route::get('teacher/change_password', [UserController::class, 'change_password']);
+    Route::post('teacher/change_password', [UserController::class, 'update_change_password']);
 
 
 });
-Route::group(['middleware'=>'student'],function (){
+Route::group(['middleware' => 'student'], function () {
 
-    Route::get('student/dashboard',[DashboardController::class,'dashboard']);
+    Route::get('student/dashboard', [DashboardController::class, 'dashboard']);
+    Route::get('student/change_password', [UserController::class, 'change_password']);
+    Route::post('student/change_password', [UserController::class, 'update_change_password']);
 
 });
-Route::group(['middleware'=>'parent'],function (){
+Route::group(['middleware' => 'parent'], function () {
 
-    Route::get('parent/dashboard',[DashboardController::class,'dashboard']);
+    Route::get('parent/dashboard', [DashboardController::class, 'dashboard']);
+    Route::get('parent/change_password', [UserController::class, 'change_password']);
+    Route::post('parent/change_password', [UserController::class, 'update_change_password']);
+
+});
+
+Route::group(['middleware'=>'alumni'],function (){
+
+    Route::get('alumni/dashboard',[DashboardController::class,'dashboard']);
 
 });
 
@@ -83,6 +98,7 @@ Route::delete("deleteJob",[JobPostController::class,'deleteJob'])->name("deleteJ
 });
 Route::get("updateProfile",[AuthController::class,'goToUpdateProfile'])->name("goToUpdateProfile");
 Route::put("updateProfile",[AuthController::class,'updateProfile'])->name("updateProfile");
+
 
 
 
